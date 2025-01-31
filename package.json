@@ -2,9 +2,11 @@
   "name": "redux-task",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://devohka.github.io/redux-task/",
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
     "cra-template": "1.2.0",
+    "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
@@ -12,6 +14,8 @@
     "redux": "^5.0.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
