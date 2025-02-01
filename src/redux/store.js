@@ -9,13 +9,13 @@ const state = {
 
     }],
     activeTask: [],
-
+    tasks: "all",
     completedTask: [],
     active: 0,
     completed: 0,
 };
 
-console.log(...state.taskList)
+console.log(state.taskList)
 
 
 const reduser = (state, action) => {
@@ -24,7 +24,10 @@ const reduser = (state, action) => {
 
         return {
             taskList: [...state.taskList, action.payload],
+            tasks: state.tasks,
+            completedTask: state.completedTask,
             activeTask: state.activeTask,
+
             active: state.active,
             completed: state.completed
         };
@@ -32,44 +35,66 @@ const reduser = (state, action) => {
     } else if (action.type === "OnTask") {
         return {
             taskList: state.taskList,
+            completedTask: state.completedTask,
+            tasks: state.tasks,
             activeTask: [...state.activeTask, ...action.payload.active],
+
             active: state.active + action.payload.num,
             completed: state.completed
         };
     } else if (action.type === "NoOnTask") {
         return {
             taskList: state.taskList,
-            activeTask: [...state.activeTask, ...action.payload.active],
+            completedTask: state.completedTask,
+            tasks: state.tasks,
+            activeTask: action.payload.active,
+
             active: state.active - action.payload.num,
             completed: state.completed
         };
     } else if (action.type === "DeleteTask") {
         return {
             taskList: action.payload.taskList,
-            completedTask: [...state.completedTask, action.payload.completedTaskEl],
+            completedTask: [...state.completedTask, ...action.payload.completedTaskEl],
+            tasks: state.tasks,
             activeTask: state.activeTask,
+
             active: state.active,
             completed: state.completed + action.payload.completed
         };
-    } else if (action.type === "ActiveTask") {
+    }
+    
+    
+    if (action.type === "ActiveTask") {
         return {
-            taskList: action.payload,
-            activeTask: state.taskList,
+            taskList: state.taskList,
+            completedTask: state.completedTask,
+            activeTask: state.activeTask,
+
+            tasks: action.payload,
+
             active: state.active,
             completed: state.completed
         };
     } else if (action.type === "AllTask") {
         return {
-            taskList: state.activeTask,
-            activeTask: state.taskList,
-            completedTask: state.taskList,
+            taskList: state.taskList,
+            completedTask: state.completedTask,
+            activeTask: state.activeTask,
+
+            tasks: action.payload,
+
             active: state.active,
             completed: state.completed
         };
     } else if (action.type === "CompletedTask") {
         return {
-            taskList: state.completedTask,
-            completedTask: state.taskList,
+            taskList: state.taskList,
+            completedTask: state.completedTask,
+            activeTask: state.activeTask,
+
+            tasks: action.payload,
+
             active: state.active,
             completed: state.completed
         };

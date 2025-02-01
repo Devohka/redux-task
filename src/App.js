@@ -3,21 +3,36 @@ import './App.css';
 import { useSelector, useDispatch } from "react-redux";
 
 function App() {
+  const taskValue = useSelector((state) => {
+    return state.tasks;
+  });
+  console.log(taskValue);
+
   const activeTaskValue = useSelector((state) => {
     return state.activeTask;
   });
+  console.log(activeTaskValue, "active");
+
   const completedTaskValue = useSelector((state) => {
     return state.completedTask;
   });
+  console.log(completedTaskValue, "completed");
+
   const taskListValue = useSelector((state) => {
     return state.taskList;
   });
+  console.log(taskListValue, "all");
+
+
   const activetValue = useSelector((state) => {
     return state.active;
   });
   const completedValue = useSelector((state) => {
     return state.completed;
   });
+
+
+
   const dispatch = useDispatch();
 
   const createNumder = () => {
@@ -50,11 +65,7 @@ function App() {
         type: "OnTask",
         payload: { num: 1, active: newTaskList }
       });
-
-
-
     } else {
-
       const idToActive = parseInt(e.target.closest("li")["id"]);
       const newTaskList = taskListValue.filter(item => {
 
@@ -70,22 +81,25 @@ function App() {
 
   const deleteTask = (e) => {
     const idToDelete = parseInt(e.target.closest("li")["id"]);
-    const completedTask = [];
+
     const newTaskList = taskListValue.filter(item => {
 
       return item.id !== idToDelete;
     });
     console.log(idToDelete);
-    completedTask.push(taskListValue.slice(idToDelete, 1));
-    newTaskList.splice(idToDelete, 0);
 
+    newTaskList.splice(idToDelete, 0);
+    const completedTaskList = taskListValue.filter(item => {
+
+      return item.id === idToDelete;
+    });
 
     dispatch({
       type: "DeleteTask",
       payload: {
         taskList: newTaskList,
         completed: 1,
-        completedTaskEl: completedTask
+        completedTaskEl: completedTaskList
       }
     })
 
@@ -98,7 +112,7 @@ function App() {
 
     dispatch({
       type: "ActiveTask",
-      payload: activeTaskValue
+      payload: "active"
     });
   };
 
@@ -106,7 +120,7 @@ function App() {
 
     dispatch({
       type: "AllTask",
-      payload: taskListValue
+      payload: "all"
     });
   };
 
@@ -115,7 +129,7 @@ function App() {
 
     dispatch({
       type: "CompletedTask",
-      payload: completedTaskValue
+      payload: "completed"
     });
   };
   return (
@@ -137,15 +151,48 @@ function App() {
       </div>
 
       <ul>
-        {taskListValue.map(text => {
-          return (
-            <>
-              <li id={text.id} key={text.id}>
-                <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
-              </li>
-            </>
-          );
-        })}
+
+        {taskValue === "all" && (
+          taskListValue.map(text => {
+            return (
+              <>
+                <li id={text.id} key={text.id}>
+                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
+                </li>
+              </>
+            );
+          })
+        )}
+
+
+        {taskValue === "active" && (
+
+          activeTaskValue.map(text => {
+            return (
+              <>
+                <li id={text.id} key={text.id}>
+                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
+                </li>
+              </>
+            );
+          })
+
+
+        )}
+
+
+        {taskValue === "completed" && (
+          completedTaskValue.map(text => {
+            return (
+              <>
+                <li id={text.id} key={text.id}>
+                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
+                </li>
+              </>
+            );
+          })
+        )}
+
       </ul>
 
     </>
