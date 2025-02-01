@@ -35,7 +35,7 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const createNumder = () => {
+ const createNumder = () => {
     return Math.round(Math.random() * (9999 - 5) + 5);
   };
 
