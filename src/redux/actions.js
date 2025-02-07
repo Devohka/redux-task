@@ -1,14 +1,12 @@
 import { createAction } from "@reduxjs/toolkit";
 
-const createNumder = () => {
-    return Math.round(Math.random() * (9999 - 5) + 5);
-};
 
-export const addTask = createAction("AddTask", e => {
+
+export const addTask = createAction("AddTask", (element, id) => {
     return {
         payload: {
-            text: e.currentTarget.elements.textInput.value,
-            id: createNumder(),
+            text: element,
+            id: id,
 
         }
     };
@@ -23,7 +21,7 @@ export const clickOnTask = createAction("OnTask", arry => {
     };
 });
 
-export const clickNoOnTask = createAction("OnTask", arry => {
+export const clickNoOnTask = createAction("NoOnTask", arry => {
     return {
         payload: {
             num: 1,

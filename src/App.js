@@ -1,55 +1,61 @@
 import InputAdd from './components/InputAdd/InputAdd';
 import './App.css';
 import { useSelector, useDispatch } from "react-redux";
+import {
+  clickOnTask,
+  clickNoOnTask,
+  deleteTask,
+  activeTask,
+  allTask,
+  completedTask,
+  addTask
+} from "./redux/actions";
+import {
+  taskList,
+  activeTaskEl,
+  tasks,
+  completedTaskEl,
+  active,
+  completed
+} from './redux/selectors';
 
 function App() {
-  const taskValue = useSelector((state) => {
-    return state.tasks;
-  });
+  const taskValue = useSelector(tasks);
   console.log(taskValue);
 
-  const activeTaskValue = useSelector((state) => {
-    return state.activeTask;
-  });
+  const activeTaskValue = useSelector(activeTaskEl);
   console.log(activeTaskValue, "active");
 
-  const completedTaskValue = useSelector((state) => {
-    return state.completedTask;
-  });
+  const completedTaskValue = useSelector(completedTaskEl);
   console.log(completedTaskValue, "completed");
 
-  const taskListValue = useSelector((state) => {
-    return state.taskList;
-  });
+  const taskListValue = useSelector(taskList);
   console.log(taskListValue, "all");
 
 
-  const activetValue = useSelector((state) => {
-    return state.active;
-  });
-  const completedValue = useSelector((state) => {
-    return state.completed;
-  });
+  const activetValue = useSelector(active);
+  const completedValue = useSelector(completed);
 
 
 
   const dispatch = useDispatch();
 
- const createNumder = () => {
+  const createNumder = () => {
     return Math.round(Math.random() * (9999 - 5) + 5);
   };
 
-  const addTask = (e) => {
+  const addTaskfun = (e) => {
     e.preventDefault();
     console.log(e.currentTarget.elements.textInput.value)
-    dispatch({
-      type: "AddTask",
-      payload: {
-        text: e.currentTarget.elements.textInput.value,
-        id: createNumder(),
+    dispatch(addTask(e.currentTarget.elements.textInput.value, createNumder()))
+    // {
 
-      }
-    })
+    //   // payload: {
+    //   //   element: e.currentTarget.elements.textInput.value,
+    //   //   id: createNumder(),
+
+    //   // }
+    // })
   };
 
   const clickTask = (e) => {
@@ -61,10 +67,13 @@ function App() {
         return item.id === idToActive;
       });
       console.log(newTaskList);
-      dispatch({
-        type: "OnTask",
-        payload: { num: 1, active: newTaskList }
-      });
+      dispatch(clickOnTask(newTaskList));
+
+      //   {
+      //   type: "OnTask",
+      //   payload: { num: 1, active: newTaskList }
+      // }
+
     } else {
       const idToActive = parseInt(e.target.closest("li")["id"]);
       const newTaskList = taskListValue.filter(item => {
@@ -72,14 +81,15 @@ function App() {
         return item.id !== idToActive;
       });
       console.log(newTaskList);
-      dispatch({
-        type: "NoOnTask",
-        payload: { num: 1, active: newTaskList }
-      });
+      dispatch(clickNoOnTask(newTaskList));
+      // dispatch({
+      //   type: "NoOnTask",
+      //   payload: { num: 1, active: newTaskList }
+      // });
     };
   };
 
-  const deleteTask = (e) => {
+  const deleteTaskFun = (e) => {
     const idToDelete = parseInt(e.target.closest("li")["id"]);
 
     const newTaskList = taskListValue.filter(item => {
@@ -94,14 +104,16 @@ function App() {
       return item.id === idToDelete;
     });
 
-    dispatch({
-      type: "DeleteTask",
-      payload: {
-        taskList: newTaskList,
-        completed: 1,
-        completedTaskEl: completedTaskList
-      }
-    })
+    dispatch(deleteTask(newTaskList, completedTaskList));
+    //   {
+    //   type: "DeleteTask",
+    //   payload: {
+    //     taskList: newTaskList,
+    //     completed: 1,
+    //     completedTaskEl: completedTaskList
+    //   }
+    // }
+
 
     // remTellBook(newTellBook);
   };
@@ -109,28 +121,28 @@ function App() {
 
 
   const activeTaskList = () => {
-
-    dispatch({
-      type: "ActiveTask",
-      payload: "active"
-    });
+    dispatch(activeTask("active"));
+    // dispatch({
+    //   type: "ActiveTask",
+    //   payload: "active"
+    // });
   };
 
   const allTaskList = () => {
-
-    dispatch({
-      type: "AllTask",
-      payload: "all"
-    });
+    dispatch(allTask("all"));
+    // dispatch({
+    //   type: "AllTask",
+    //   payload: "all"
+    // });
   };
 
 
   const completedTaskList = () => {
-
-    dispatch({
-      type: "CompletedTask",
-      payload: "completed"
-    });
+    dispatch(completedTask("completed"));
+    // dispatch({
+    //   type: "CompletedTask",
+    //   payload: "completed"
+    // });
   };
   return (
     <>
@@ -139,7 +151,7 @@ function App() {
       <p>Active: {activetValue}</p>
       <p>Completed: {completedValue}</p>
 
-      <form onSubmit={addTask}>
+      <form onSubmit={addTaskfun}>
         <input type="text" placeholder='Enter task text...' name='textInput' />
         <button type='submit'>Add task</button>
       </form>
@@ -157,7 +169,7 @@ function App() {
             return (
               <>
                 <li id={text.id} key={text.id}>
-                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
+                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTaskFun} />
                 </li>
               </>
             );
@@ -171,7 +183,7 @@ function App() {
             return (
               <>
                 <li id={text.id} key={text.id}>
-                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
+                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTaskFun} />
                 </li>
               </>
             );
@@ -186,7 +198,7 @@ function App() {
             return (
               <>
                 <li id={text.id} key={text.id}>
-                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTask} />
+                  <InputAdd valueText={text.text} onclick={clickTask} ondelete={deleteTaskFun} />
                 </li>
               </>
             );
