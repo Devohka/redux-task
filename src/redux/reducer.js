@@ -13,24 +13,32 @@ import {
 console.log("LocalStorage build");
 
 
+// const state = {
+//     taskList: JSON.parse(localStorage.getItem("taskList")),
+//     activeTask: JSON.parse(localStorage.getItem("activeTask")).act,
+//     tasks: "all",
+//     completedTask: JSON.parse(localStorage.getItem("completed")).com,
+//     active: JSON.parse(localStorage.getItem("activeTask")).num,
+//     completed: JSON.parse(localStorage.getItem("completed")).numCom,
+// };
+// localStorage.setItem("taskList", JSON.stringify([...state.taskList]));
+// localStorage.setItem("activeTask", JSON.stringify({ act: [...state.activeTask], num: state.active }));
+// localStorage.setItem("completed", JSON.stringify({ com: [...state.completedTask], numCom: state.completed }));
+
+
 const state = {
-    taskList: JSON.parse(localStorage.getItem("taskList")),
-    activeTask: JSON.parse(localStorage.getItem("activeTask")).act,
+    taskList: [],
+    activeTask: [],
     tasks: "all",
-    completedTask: JSON.parse(localStorage.getItem("completed")).com,
-    active: JSON.parse(localStorage.getItem("activeTask")).num,
-    completed: JSON.parse(localStorage.getItem("completed")).numCom,
+    completedTask: [],
+    active: 0,
+    completed: 0,
 };
-localStorage.setItem("taskList", JSON.stringify([...state.taskList]));
-localStorage.setItem("activeTask", JSON.stringify({ act: [...state.activeTask], num: state.active }));
-localStorage.setItem("completed", JSON.stringify({ com: [...state.completedTask], numCom: state.completed }));
-console.log(state.taskList)
-
-
+console.log(state.taskList);
 export const reduser = createReducer(state, builder => {
     builder
         .addCase(addTask, (state, action) => {
-            localStorage.setItem("taskList", JSON.stringify([...state.taskList, action.payload]));
+            // localStorage.setItem("taskList", JSON.stringify([...state.taskList, action.payload]));
             return {
                 taskList: [...state.taskList, action.payload],
                 tasks: state.tasks,
@@ -42,7 +50,7 @@ export const reduser = createReducer(state, builder => {
             }
         })
         .addCase(clickOnTask, (state, action) => {
-            localStorage.setItem("activeTask", JSON.stringify({ act: [...state.activeTask, ...action.payload.active], num: state.active + action.payload.num }));
+            // localStorage.setItem("activeTask", JSON.stringify({ act: [...state.activeTask, ...action.payload.active], num: state.active + action.payload.num }));
             return {
                 taskList: state.taskList,
                 completedTask: state.completedTask,
@@ -54,7 +62,7 @@ export const reduser = createReducer(state, builder => {
             }
         })
         .addCase(clickNoOnTask, (state, action) => {
-            localStorage.setItem("activeTask", JSON.stringify({ act: action.payload.active, num: state.active - action.payload.num }));
+            // localStorage.setItem("activeTask", JSON.stringify({ act: action.payload.active, num: state.active - action.payload.num }));
             return {
                 taskList: state.taskList,
                 completedTask: state.completedTask,
@@ -119,7 +127,6 @@ export const reduser = createReducer(state, builder => {
         })
 
 
-    localStorage.setItem("completedTask", JSON.stringify(state.completedTask));
 
     // return state;
 });
