@@ -13,18 +13,18 @@ const state = {
     taskList: JSON.parse(localStorage.getItem("taskList")),
     activeTask: JSON.parse(localStorage.getItem("activeTask")).act,
     tasks: "all",
-    completedTask: JSON.parse(localStorage.getItem("completedTask")).com,
+    completedTask: JSON.parse(localStorage.getItem("completed")).com,
     active: JSON.parse(localStorage.getItem("activeTask")).num,
-    completed: JSON.parse(localStorage.getItem("completedTask")).numCom,
+    completed: JSON.parse(localStorage.getItem("completed")).numCom,
 };
 
 console.log(state.taskList)
-
+// localStorage.clear();
 localStorage.setItem("taskList", JSON.stringify([{text:"Зробити планувальник",id:0}]));
 localStorage.setItem("activeTask", JSON.stringify({ act: [], num: 0 }));
-localStorage.setItem("completedTask", JSON.stringify({ com: [], numCom: 0 }));
+localStorage.setItem("completed", JSON.stringify({ com: [], numCom: 0 }));
 
-// localStorage.clear();
+
 export const reduser = createReducer(state, builder => {
     builder
         .addCase(addTask, (state, action) => {
@@ -64,7 +64,7 @@ export const reduser = createReducer(state, builder => {
             }
         })
         .addCase(deleteTask, (state, action) => {
-            localStorage.setItem("completedTask", JSON.stringify({
+            localStorage.setItem("completed", JSON.stringify({
                 com: [...state.completedTask, ...action.payload.completedTaskEl],
                 numCom: state.completed + action.payload.completed
             }));
