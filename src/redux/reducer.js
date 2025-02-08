@@ -9,9 +9,7 @@ import {
     addTask
 } from "./actions";
 // localStorage.clear();
-localStorage.setItem("taskList", JSON.stringify([{text:"Зробити планувальник",id:0}]));
-localStorage.setItem("activeTask", JSON.stringify({ act: [], num: 0 }));
-localStorage.setItem("completed", JSON.stringify({ com: [], numCom: 0 }));
+
 console.log("LocalStorage build");
 
 
@@ -23,7 +21,9 @@ const state = {
     active: JSON.parse(localStorage.getItem("activeTask")).num,
     completed: JSON.parse(localStorage.getItem("completed")).numCom,
 };
-
+localStorage.setItem("taskList", JSON.stringify([...state.taskList]));
+localStorage.setItem("activeTask", JSON.stringify({ act: [...state.activeTask], num: state.active }));
+localStorage.setItem("completed", JSON.stringify({ com: [...state.completedTask], numCom: state.completed }));
 console.log(state.taskList)
 
 
