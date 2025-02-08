@@ -8,6 +8,12 @@ import {
     completedTask,
     addTask
 } from "./actions";
+// localStorage.clear();
+localStorage.setItem("taskList", JSON.stringify([{text:"Зробити планувальник",id:0}]));
+localStorage.setItem("activeTask", JSON.stringify({ act: [], num: 0 }));
+localStorage.setItem("completed", JSON.stringify({ com: [], numCom: 0 }));
+console.log("LocalStorage build");
+
 
 const state = {
     taskList: JSON.parse(localStorage.getItem("taskList")),
@@ -19,10 +25,6 @@ const state = {
 };
 
 console.log(state.taskList)
-// localStorage.clear();
-localStorage.setItem("taskList", JSON.stringify([{text:"Зробити планувальник",id:0}]));
-localStorage.setItem("activeTask", JSON.stringify({ act: [], num: 0 }));
-localStorage.setItem("completed", JSON.stringify({ com: [], numCom: 0 }));
 
 
 export const reduser = createReducer(state, builder => {
